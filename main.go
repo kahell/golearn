@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"golearn/auth"
 	"golearn/campaign"
 	"golearn/handler"
@@ -32,9 +31,7 @@ func main() {
 	campaignService := campaign.NewService(campaignRepository)
 	authService := auth.NewService()
 
-	campaigns, _ := campaignService.FindCampaigns(1)
-	fmt.Println(len(campaigns))
-
+	campaignHandler := handler.NewCampaignHandler(campaignService)
 	userHandler := handler.NewUserHandler(userService, authService)
 
 	router := gin.Default()
@@ -44,6 +41,8 @@ func main() {
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
 	api.POST("/avatars", authMiddleware(authService, userService), userHandler.UploadAvatar)
+
+	api.GET("/campaigns", campaignHandler.GetCampaigns)
 
 	router.Run()
 }
