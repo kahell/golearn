@@ -1,14 +1,18 @@
 package transaction
 
-import "time"
+import (
+	"golearn/user"
+	"time"
+)
 
 type Transaction struct {
 	ID         int
 	CampaignID int
 	UserID     int
-	Amoung     int
+	Amount     int
 	Status     string
 	Code       string
+	User       user.User
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 }
